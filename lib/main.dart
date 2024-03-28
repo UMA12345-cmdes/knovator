@@ -53,6 +53,14 @@ class _ResumeScreenState extends State<ResumeScreen> {
             return ListTile(
               key: Key('$index'),
               title: Text(resumeItems[index]),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  setState(() {
+                    resumeItems.removeAt(index);
+                  });
+                },
+              ),
             );
           },
         ),
