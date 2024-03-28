@@ -57,6 +57,43 @@ class _ResumeScreenState extends State<ResumeScreen> {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addItem,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  void _addItem() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add Item'),
+          content: TextField(
+            controller: itemController,
+            decoration: const InputDecoration(hintText: 'Enter item name'),
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            MaterialButton(
+              onPressed: () {
+                setState(() {
+                  resumeItems.add(itemController.text);
+                });
+                Navigator.of(context).pop();
+                itemController.clear();
+              },
+              child: const Text('Add'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
