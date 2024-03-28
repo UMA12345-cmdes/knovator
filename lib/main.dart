@@ -25,9 +25,9 @@ class ResumeScreen extends StatefulWidget {
 
 class _ResumeScreenState extends State<ResumeScreen> {
   List<String> resumeItems = [
-    'Education',
-    'Experience',
-    'Skills',
+    'Ram',
+    'Sita',
+    'Gita',
   ];
   final TextEditingController itemController = TextEditingController();
 
@@ -35,6 +35,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
         title: const Text('Resume'),
       ),
       body: ReorderableListView(
@@ -53,13 +55,22 @@ class _ResumeScreenState extends State<ResumeScreen> {
             return ListTile(
               key: Key('$index'),
               title: Text(resumeItems[index]),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  setState(() {
-                    resumeItems.removeAt(index);
-                  });
-                },
+              trailing: Wrap(
+                children: [
+                  IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        _updateItem(index);
+                      }),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      setState(() {
+                        resumeItems.removeAt(index);
+                      });
+                    },
+                  ),
+                ],
               ),
             );
           },
@@ -98,6 +109,39 @@ class _ResumeScreenState extends State<ResumeScreen> {
                 itemController.clear();
               },
               child: const Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateItem(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Update Item'),
+          content: TextField(
+            controller: itemController,
+            decoration: const InputDecoration(hintText: 'Enter item name'),
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            MaterialButton(
+              onPressed: () {
+                setState(() {
+                  resumeItems[index] = itemController.text;
+                });
+                Navigator.of(context).pop();
+                itemController.clear();
+              },
+              child: const Text('Update'),
             ),
           ],
         );
